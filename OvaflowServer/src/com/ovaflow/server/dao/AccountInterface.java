@@ -15,6 +15,9 @@ public interface AccountInterface {
 	 */
 	public Account fetchAccountInfo(String username, String password);
 
+	public void registerNewAccount(String username, String password,
+			String email, int RMB);
+
 	/**
 	 * Fetches user's friends information
 	 * 
