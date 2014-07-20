@@ -1,24 +1,22 @@
 package com.ovaflow.server.dto;
 
+import java.security.NoSuchAlgorithmException;
+
 public class Account {
 	private String accountId;
 	private String username;
-	private String email;
 	private int RMB;
+	private int CurrentAvatar;
 
-	public Account(String accountId, String username, String email, int RMB) {
+	public Account(String accountId, String username, int RMB, int currentavatar) {
 		this.accountId = accountId;
 		this.username = username;
-		this.email = email;
 		this.RMB = RMB;
+		this.CurrentAvatar = currentavatar;
 	}
 
 	public String getAccountId() {
 		return accountId;
-	}
-
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
 	}
 
 	public String getUsername() {
@@ -29,19 +27,20 @@ public class Account {
 		this.username = username;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public int getRMB() {
 		return RMB;
 	}
-
-	public void setRMB(int rMB) {
-		RMB = rMB;
+	
+	public int getCA() {
+		return CurrentAvatar;
 	}
+	
+	public String hash(int salt) throws NoSuchAlgorithmException {
+		if(accountId!=null)
+		{
+			return Integer.toString((accountId.hashCode() + salt) & 0x7FFFFFFF, 36);
+		}
+		return null;
+	}
+
 }

@@ -1,6 +1,6 @@
 package com.ovaflow.server.dao;
 
-import java.util.List;
+
 
 import com.ovaflow.server.dto.Account;
 
@@ -15,14 +15,8 @@ public interface AccountInterface {
 	 */
 	public Account fetchAccountInfo(String username, String password);
 
-	public void registerNewAccount(String username, String password,
-			String email, int RMB);
+	public int registerNewAccount(String useraccount, String username, String password);
+	
+	public int renewRMB(String username, String add);
 
-	/**
-	 * Fetches user's friends information
-	 * 
-	 * @param username
-	 * @return list of user's friends info, or null if none found
-	 */
-	public List<Account> fetchFriendsInfo(String username);
 }

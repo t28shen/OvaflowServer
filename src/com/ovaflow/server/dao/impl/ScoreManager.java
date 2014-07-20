@@ -1,9 +1,16 @@
 package com.ovaflow.server.dao.impl;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
 
-public class ScoreManager {
-	public int NewHighScore(String UserName, int BMId, int Score,int Combo) 
+import com.ovaflow.server.dao.ScoreInterface;
+import com.ovaflow.server.dto.Score;
+
+public class ScoreManager implements ScoreInterface{
+	private int NewHighScore(String UserName, int BMId, int Score,int Combo) 
 	{
 		int flag = 0;
 		Connection con = Connect.myConnect(); // 定义一个MYSQL链接对象
@@ -51,9 +58,10 @@ public class ScoreManager {
 		}
 		return flag;
 	}
-	public int GetHighScore(String UserName, int BMId)
+	private Score GetHighScore(String UserName, int BMId)
 	{
-		int flag = -1;
+		int flag = 0;
+		Score answer = null;
 		Connection con = Connect.myConnect(); // 定义一个MYSQL链接对象
 		PreparedStatement prestate = null;
 		try {
@@ -63,8 +71,13 @@ public class ScoreManager {
 			ResultSet res = prestate.executeQuery();
 			// ResultSetMetaData resd = res.getMetaData();
 			while (res.next()) {
-					flag = res.getInt(3);
+					flag = 1;
+					answer = new Score(res.getString(1),res.getInt(2),res.getInt(3),res.getInt(4));
 					break;
+			}
+			if(flag != 1)
+			{
+				answer = new Score(UserName,BMId,-1,-1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,24 +90,24 @@ public class ScoreManager {
 				}
 			}
 		}
-		return flag;
+		return answer;
 	}
 	
-	public int GetCombo(String UserName, int BMId)
+	private Vector<Score> ScoreBarod(int BMId)
 	{
-		int flag = -1;
+		Vector<Score> los = new Vector<Score>();
 		Connection con = Connect.myConnect(); // 定义一个MYSQL链接对象
 		PreparedStatement prestate = null;
 		try {
 			prestate = con
-					.prepareStatement("select * from tab_highscoreinfo where UserName ='"
-							+ UserName + "' and BMId = '"+ BMId + "'");
+					.prepareStatement("select * from tab_highscoreinfo where BMId = '"+ BMId + "' ORDER BY Score DESC Limit 3");
 			ResultSet res = prestate.executeQuery();
 			// ResultSetMetaData resd = res.getMetaData();
 			while (res.next()) {
-					flag = res.getInt(4);
-					break;
-			}
+				Score a = new Score(res.getString(1),res.getInt(2),res.getInt(3),res.getInt(4));
+				los.add(a);
+            }
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -106,7 +119,22 @@ public class ScoreManager {
 				}
 			}
 		}
-		return flag;
+		
+		return los;
 	}
+	@Override
+	public int newhighscore(String UserName, int BMId, int Score, int Combo) {
+		return NewHighScore(UserName,BMId,Score,Combo);
+	}
+	@Override
+	public Score gethighscore(String UserName, int BMId) {
+		return GetHighScore(UserName,BMId);
+	}
+	@Override
+	public Vector<Score> scorebarod(int BMId) {
+		return ScoreBarod(BMId);
+	}
+	
+	
 
 }

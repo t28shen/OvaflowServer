@@ -1,0 +1,139 @@
+NewUser
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/newuser?usra=guest&usrn=guest&pass=guest
+	Output:
+			{"User":"guest","State": 1}
+
+Login
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/acinfo?usr=random&pass=random
+	Output:
+			{"Token":"9hm4li","User":"dawn","RMB":500,"Current Avatar": 1}
+
+AddRMB
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/rrmb?usr=1ze&$=100
+	Output:
+			{"User":"dawn","RMB": 600}
+
+GetHighScore
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/hsinfo?usr=9g05ol&bm=1
+	Output:
+			{"User":"dawn","BMId": 1,"Score": 13,"Combo": 14}
+
+NewHighScore
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/newhs?usr=9g05ol&bm=1&score=13&combo=14
+	Output:
+			{"User":"dawn","BMId": 1,"State": 1}
+
+ScoreBoard
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/sbinfo?bm=1
+	Output:
+			{"ScoreBard":[
+							{"User":"dawn","BMId": 1,"Score": 13,"Combo": 14},
+							{"User":"sky","BMId": 1,"Score": 10,"Combo": 11}
+						]
+			}
+
+SongList
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/song
+	Output:
+			{"SongList":[
+							{"Id":13,"SongName": "a","Singer": "A"},
+							{"Id":14,"SongName": "b","Singer": "A"},
+							{"Id":15,"SongName": "c","Singer": "B"},
+							{"Id":16,"SongName": "d","Singer": "B"},
+							{"Id":17,"SongName": "e","Singer": "C"},
+							{"Id":18,"SongName": "f","Singer": "C"}
+						]
+			}
+
+SearchSongBySinger
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/sbys?singer=A
+	Output:
+			{"SongList":[
+							{"Id":13,"SongName": "a","Singer": "A"},
+							{"Id":14,"SongName": "b","Singer": "A"}
+						]
+			}
+
+SearchSongByName
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/sbyn?songname=a
+	Output:
+			{"SongList":[
+							{"Id":13,"SongName": "a","Singer": "A"}
+						]
+			}
+
+HaveSong
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/haves?usr=9iy50o&id=13
+	Output:
+			{"State":0}
+
+
+OMB
+	URL: 
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/obm?usr=9iy50o
+	Output:
+			{"BeatMapList":[
+								{"BMId":1,"SongId": "13","BMName": "Rock,"Creater": "Steve"}
+							]
+			}
+
+NOMB
+	URL: 
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/nobm?usr=9iy50o
+	Output:
+			{"BeatMapList":[
+								{"BMId":1,"SongId": "13","BMName": "Rock,"Creater": "Steve"}
+							]
+			}
+
+OSCBM
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/oscbm?usr=9puhjx&creater=Steve
+	Output:
+			{"BeatMapList":[
+								{"BMId":1,"SongId": "13","BMName": "Rock,"Creater": "Steve"}
+							]
+			}
+
+OSNBM
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/osnbm?usr=9puhjx&beatmapname=Rock
+	Output:
+			{"BeatMapList":[
+								{"BMId":1,"SongId": "13","BMName": "Rock,"Creater": "Steve"}
+							]
+			}
+
+NOSCBM
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/noscbm?usr=9puhjx&creater=Steve
+	Output:
+			{"BeatMapList":[
+								{"BMId":1,"SongId": "13","BMName": "Rock,"Creater": "Steve"}
+							]
+			}
+
+NOSNBM
+	URL:
+			http://192.168.0.15:8080/OvaflowServer/rest/ovf/nosnbm?usr=9pnsx6&beatmapname=Rock
+	Output:
+			{"BeatMapList":[
+								{"BMId":1,"SongId": "13","BMName": "Rock,"Creater": "Steve"}
+							]
+			}
+
+download
+
+http://192.168.0.15:8080/OvaflowServer/rest/ovf/downloadbm?usr=9q7ct5&id=1
+
+http://192.168.0.15:8080/OvaflowServer/rest/ovf/downloadsong?usr=9q7ct5&id=1

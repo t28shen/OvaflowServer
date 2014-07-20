@@ -4,17 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import com.ovaflow.server.dao.AccountInterface;
 import com.ovaflow.server.dto.Account;
+
 public class AccountManager implements AccountInterface {
 	
 	// check valid user login 0: not valid, 1: valid
 	private Account LoginCheck(String UserAccount, String Password) {
 		String Name = null;
+		String account = null;
 		int RMB = -1;
 		Account ac = null;
+		int CA = -1;
 		Connection con = Connect.myConnect(); // 定义一个MYSQL链接对象
 		PreparedStatement prestate = null;
 		try {
@@ -25,12 +27,14 @@ public class AccountManager implements AccountInterface {
 			// ResultSetMetaData resd = res.getMetaData();
 			while (res.next()) {
 				if (Password.equals(res.getString(3))) {
+					account = "~"+res.getString(1);
 					Name = res.getString(2);
 					RMB = res.getInt(4);
+					CA = res.getInt(5);
 					break;
 				}
 			}
-			ac = new Account(UserAccount,Name,null,RMB);
+			ac = new Account(account,Name,RMB,CA);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,11 +116,12 @@ public class AccountManager implements AccountInterface {
 		PreparedStatement prestate = null;
 		try {
 			prestate = con
-					.prepareStatement("insert into tab_userinfo values(?,?,?,?)");
+					.prepareStatement("insert into tab_userinfo values(?,?,?,?,?)");
 			prestate.setString(1, UserAccount);
 			prestate.setString(2, UserName);
 			prestate.setString(3, Password);
 			prestate.setInt(4, 400);
+			prestate.setInt(5, -1);
 			boolean res = prestate.execute();
 			if (!res) {
 				flag = 1;
@@ -152,7 +157,7 @@ public class AccountManager implements AccountInterface {
 				RMB = res.getInt(4) + Money;
 			}
 			prestate2 = con.prepareStatement("update tab_userinfo set RMB ='"
-					+ RMB + "'");
+					+ RMB + "'where UserName = '"+ UserName + "'");
 			prestate2.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -175,16 +180,20 @@ public class AccountManager implements AccountInterface {
 	}
 
 	@Override
-	public void registerNewAccount(String username, String password,
-			String email, int RMB) {
-		// TODO Auto-generated method stub
-		
+	public int registerNewAccount(String useraccount, String username, String password) {
+		int a = OnlyUNCheck(username);
+		int b = OnlyUACheck(useraccount);
+		if(a*b != 0)
+		{
+			return NewUser(useraccount,username,password);
+		}
+		else return 0;
 	}
 
 	@Override
-	public List<Account> fetchFriendsInfo(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public int renewRMB(String username, String add)
+	{
+		return RenewRMB(username,Integer.parseInt(add));
 	}
 
 }
